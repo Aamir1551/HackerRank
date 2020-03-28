@@ -1,8 +1,7 @@
 
 import { MinHeap } from "../min_heap/min_heap";
 
-
-function solve(treeWeights:Map<number, number>, tree:Map<number, number>, i:number, j:number, k:number, l:number) : number {
+function solveForInstance(treeWeights:Map<number, number>, tree:Map<number, number>, i:number, j:number, k:number, l:number) : number {
 
     let heap1 = generateHeap(i, j, tree, treeWeights);
     let heap2 = generateHeap(k, l, tree, treeWeights);
@@ -16,7 +15,7 @@ function solve(treeWeights:Map<number, number>, tree:Map<number, number>, i:numb
         let heap2Values:Map<number, number> = new Map<number, number>();
 
         while(heap1.peekMin()[0] == heap1MinValue) {
-            let [weight, nodeIndex]:[number, number] = heap1.removeMin();
+            let nodeIndex:number = heap1.removeMin()[1];
 
             if(heap1Values.has(nodeIndex)) {
                 heap1Values.set(nodeIndex, heap1Values.get(nodeIndex) + 1)
@@ -49,7 +48,6 @@ function solve(treeWeights:Map<number, number>, tree:Map<number, number>, i:numb
 function generateHeap(i:number, j:number, tree:Map<number, number>, treeWeights:Map<number, number>) : MinHeap<number> {
 
     let pathMinHeap : MinHeap<number> = new MinHeap<number>();
-
     let path:Array<number> = getPathFrom(i, j, tree);
 
     for(let k=0; k<path.length; k++) {
@@ -80,10 +78,8 @@ function getPathToRoot(tree:Map<number, number>, nodeInTree : number) : [Array<n
 function getPathFrom(i:number, j:number, tree:Map<number, number>) : Array<number> {
 
     let [pathToRoot, pathSetToRoot] = getPathToRoot(tree, j);
-
     let currentNode :number = i;
     let path: Array<number> = [currentNode]
-
     
     while(!pathSetToRoot.has(currentNode)) {
         path.push(tree.get(currentNode));
