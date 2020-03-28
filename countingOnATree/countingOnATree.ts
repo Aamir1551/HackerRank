@@ -20,9 +20,7 @@ function solveForInstance(treeWeights:Map<number, number>, tree:Map<number, numb
         }
 
         while(heap2.peekMin()[0] <= heap1MinValue) {
-
             let [weight, nodeIndex]:[number, number] = heap2.removeMin();
-
             if(weight == heap1MinValue) {
                 heap2Values.add(nodeIndex);
             }
