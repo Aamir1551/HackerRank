@@ -69,5 +69,4 @@ def bfs_search(start_node, end_node, neighbour_map):
     if(end_node in visited): return min_counts[end_node]
     return -1
 
-
 print(bfs_search(start, end, neighbours))
