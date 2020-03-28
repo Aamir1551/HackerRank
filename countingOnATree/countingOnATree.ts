@@ -11,16 +11,12 @@ function solveForInstance(treeWeights:Map<number, number>, tree:Map<number, numb
     while(heap1.getSize() > 0 && heap2.getSize() > 0) {
         
         let heap1MinValue = heap1.peekMin()[0];
-        let heap1Values:Map<number, number> = new Map<number, number>();
-        let heap2Values:Map<number, number> = new Map<number, number>();
+        let heap1Values:Set<number> = new Set<number>();
+        let heap2Values:Set<number> = new Set<number>();
 
         while(heap1.peekMin()[0] == heap1MinValue) {
             let nodeIndex:number = heap1.removeMin()[1];
-
-            if(heap1Values.has(nodeIndex)) {
-                heap1Values.set(nodeIndex, heap1Values.get(nodeIndex) + 1)
-            }
-            heap1Values.set(nodeIndex, 0);
+            heap1Values.add(nodeIndex);
         }
 
         while(heap2.peekMin()[0] <= heap1MinValue) {
@@ -28,17 +24,11 @@ function solveForInstance(treeWeights:Map<number, number>, tree:Map<number, numb
             let [weight, nodeIndex]:[number, number] = heap2.removeMin();
 
             if(weight == heap1MinValue) {
-                if(heap2Values.has(nodeIndex)) {
-                    heap2Values.set(nodeIndex, heap2Values.get(nodeIndex) + 1)
-                }
-                heap1Values.set(nodeIndex, 0);
+                heap2Values.add(nodeIndex);
             }
         }
 
-        for(let n of heap2Values.keys()) {
-            count += heap1Values.size - heap2Values.get(n);
-        }
-
+        heap2Values.forEach(x=> count+=heap1Values.size - (heap1Values.has(x) ? 1 : 0));
     }
     
     return count
